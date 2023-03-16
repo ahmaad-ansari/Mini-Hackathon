@@ -22,16 +22,6 @@
                     </svg>
                     <span class="fs-4 ms-1">Cocktail</span>
                 </a>
-                <!-- <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
-                    <a class="py-2 me-3 text-dark text-decoration-none" href="\">
-                        <i class="bi bi-person-add" style="font-size: 1.5rem;"></i>
-                        Cashier
-                    </a>
-                    <a class="py-2 text-dark text-decoration-none" href="\">
-                        <i class="bi bi-database-add" style="font-size: 1.5rem;"></i>
-                        Database
-                    </a>
-                </nav> -->
             </div>
         
             <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
