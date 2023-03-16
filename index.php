@@ -37,7 +37,7 @@
         </header>
         
         <main>
-        <form class="row g-3" method="POST" id="byName" name="byName">
+            <form class="row g-3" method="POST" id="byName" name="byName">
                 <div class="col-auto">
                     <input type="text" class="form-control" id="id" placeholder="Cocktail Name" name="cocktailName">
                 </div>
@@ -116,19 +116,23 @@
                                         if(isset($_POST['cocktailByName'])){
                                             $cocktail = getCocktailByName();
 
-                                            $id = $cocktail["drinks"][0]["idDrink"];
-                                            $name = $cocktail["drinks"][0]["strDrink"];
-                                            $alcohol = $cocktail["drinks"][0]["strAlcoholic"];
-                                            $glass = $cocktail["drinks"][0]["strGlass"];
+                                            $total = count($cocktail['drinks']);
 
-                                            echo('
-                                            <tr>
-                                                <th scope="row" style="color: #666666;">' . $id . '</th>
-                                                <td>' . $name . '</td>
-                                                <td>' . $alcohol . '</td>
-                                                <td>' . $glass . '</td>
-                                            </tr>
-                                            ');
+                                            for($i = 0; $i < $total; $i++) {
+                                                $id = $cocktail["drinks"][$i]["idDrink"];
+                                                $name = $cocktail["drinks"][$i]["strDrink"];
+                                                $alcohol = $cocktail["drinks"][$i]["strAlcoholic"];
+                                                $glass = $cocktail["drinks"][$i]["strGlass"];
+
+                                                echo('
+                                                <tr>
+                                                    <th scope="row" style="color: #666666;">' . $id . '</th>
+                                                    <td>' . $name . '</td>
+                                                    <td>' . $alcohol . '</td>
+                                                    <td>' . $glass . '</td>
+                                                </tr>
+                                                ');
+                                            }
                                         }
                                     ?>
 
@@ -207,11 +211,10 @@ function getCocktailById(){
 function getCocktailByName(){
     $curl = curl_init();
 
-    $id = htmlentities($_POST['cocktailName']);
-
+    $name = htmlentities($_POST['cocktailName']);
 
     curl_setopt_array($curl, array(
-    CURLOPT_URL => 'www.thecocktaildb.com/api/json/v1/1/lookup.php?i=' . $id . '',
+    CURLOPT_URL => 'www.thecocktaildb.com/api/json/v1/1/search.php?s='. $name .'',
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => '',
     CURLOPT_MAXREDIRS => 10,
