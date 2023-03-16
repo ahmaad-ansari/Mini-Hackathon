@@ -55,16 +55,18 @@
                     <button type="submit" class="btn btn-primary mb-3">Search</button>
                 </div>
             </form>
-            <form class="row g-3" method="POST" name="randomCocktail">
+            <form class="row g-3" method="POST" id="" name="randomCocktail">
                 <div class="col-auto">
                     <button type="submit" class="btn btn-primary mb-3">Search</button>
                 </div>
             </form>
 
 
-            <table>
-
-            </table>
+            <?php
+                if(isset($_POST['randomCocktail'])){
+                    $randomCocktail = getRandomCocktail();
+                }
+            ?>
         </main>
         
         <footer class="pt-4 my-md-5 pt-md-5 border-top">
@@ -78,3 +80,30 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 </html>
+
+<?php
+
+function getRandomCocktail(){
+
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+    CURLOPT_URL => 'www.thecocktaildb.com/api/json/v1/1/random.php',
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => '',
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 0,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => 'GET',
+    ));
+
+    $response = curl_exec($curl);
+
+    curl_close($curl);
+    $APIResponse = json_decode($response, true);
+
+    return $APIResponse;
+
+}
+
