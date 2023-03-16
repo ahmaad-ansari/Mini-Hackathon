@@ -37,47 +37,108 @@
         </header>
         
         <main>
-            <form class="row g-3" method="POST" name="byName">
+        <form class="row g-3" method="POST" id="byName" name="byName">
                 <div class="col-auto">
-                    <label for="inputPassword2" class="visually-hidden"></label>
-                    <input type="password" class="form-control" id="inputPassword2" placeholder="Cocktail Name">
+                    <input type="text" class="form-control" id="id" placeholder="Cocktail Name" name="cocktailName">
                 </div>
                 <div class="col-auto">
-                    <button type="submit" class="btn btn-primary mb-3">Search</button>
-                </div>
-            </form>
-            <form class="row g-3" method="POST" name="byId">
-                <div class="col-auto">
-                    <label for="inputPassword2" class="visually-hidden"></label>
-                    <input type="password" class="form-control" id="inputPassword2" placeholder="Cocktail Name">
-                </div>
-                <div class="col-auto">
-                    <button type="submit" class="btn btn-primary mb-3">Search</button>
+                    <button type="submit" class="btn btn-primary mb-3" name="cocktailByName">Search Name</button>
                 </div>
             </form>
+            
+            <form class="row g-3" method="POST" id="byId" name="byId">
+                <div class="col-auto">
+                    <input type="text" class="form-control" id="id" placeholder="Cocktail Id" name="cocktailId">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary mb-3" name="cocktailById">Search Id</button>
+                </div>
+            </form>
+
             <form class="row g-3" method="POST" id="randomCocktail" name="randomCocktail">
                 <div class="col-auto">
                     <button type="submit" class="btn btn-primary mb-3" name="randomCocktail">Random Cocktail</button>
                 </div>
             </form>
 
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12">
+                        <div class="table-responsive bg-white" data-mdb-perfect-scrollbar="true" style="position: relative; height: 445px;">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Id</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Alcohol</th>
+                                        <th scope="col">Glass</th>
 
-            <?php
-                if(isset($_POST['randomCocktail'])){
-                    $randomCocktail = getRandomCocktail();
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                        if(isset($_POST['randomCocktail'])){
+                                            $randomCocktail = getRandomCocktail();
 
-                    $id = $randomCocktail["drinks"][0]["idDrink"];
-                    $name = $randomCocktail["drinks"][0]["strDrink"];
-                    $alcohol = $randomCocktail["drinks"][0]["strAlcoholic"];
-                    $glass = $randomCocktail["drinks"][0]["strGlass"];
+                                            $id = $randomCocktail["drinks"][0]["idDrink"];
+                                            $name = $randomCocktail["drinks"][0]["strDrink"];
+                                            $alcohol = $randomCocktail["drinks"][0]["strAlcoholic"];
+                                            $glass = $randomCocktail["drinks"][0]["strGlass"];
 
+                                            echo('
+                                            <tr>
+                                                <th scope="row" style="color: #666666;">' . $id . '</th>
+                                                <td>' . $name . '</td>
+                                                <td>' . $alcohol . '</td>
+                                                <td>' . $glass . '</td>
+                                            </tr>
+                                            ');
+                                        }
 
-                    echo($id);
-                    echo($name);
-                    echo($alcohol);
-                    echo($glass);
-                }
-            ?>
+                                        if(isset($_POST['cocktailById'])){
+                                            $cocktail = getCocktailById();
+
+                                            $id = $cocktail["drinks"][0]["idDrink"];
+                                            $name = $cocktail["drinks"][0]["strDrink"];
+                                            $alcohol = $cocktail["drinks"][0]["strAlcoholic"];
+                                            $glass = $cocktail["drinks"][0]["strGlass"];
+
+                                            echo('
+                                            <tr>
+                                                <th scope="row" style="color: #666666;">' . $id . '</th>
+                                                <td>' . $name . '</td>
+                                                <td>' . $alcohol . '</td>
+                                                <td>' . $glass . '</td>
+                                            </tr>
+                                            ');
+                                        }
+
+                                        if(isset($_POST['cocktailByName'])){
+                                            $cocktail = getCocktailByName();
+
+                                            $id = $cocktail["drinks"][0]["idDrink"];
+                                            $name = $cocktail["drinks"][0]["strDrink"];
+                                            $alcohol = $cocktail["drinks"][0]["strAlcoholic"];
+                                            $glass = $cocktail["drinks"][0]["strGlass"];
+
+                                            echo('
+                                            <tr>
+                                                <th scope="row" style="color: #666666;">' . $id . '</th>
+                                                <td>' . $name . '</td>
+                                                <td>' . $alcohol . '</td>
+                                                <td>' . $glass . '</td>
+                                            </tr>
+                                            ');
+                                        }
+                                    ?>
+
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
         
         <footer class="pt-4 my-md-5 pt-md-5 border-top">
@@ -116,5 +177,55 @@ function getRandomCocktail(){
 
     return $APIResponse;
 
+}
+
+function getCocktailById(){
+    $curl = curl_init();
+
+    $id = htmlentities($_POST['cocktailId']);
+
+
+    curl_setopt_array($curl, array(
+    CURLOPT_URL => 'www.thecocktaildb.com/api/json/v1/1/lookup.php?i=' . $id . '',
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => '',
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 0,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => 'GET',
+    ));
+
+    $response = curl_exec($curl);
+
+    curl_close($curl);
+    $APIResponse = json_decode($response, true);
+
+    return $APIResponse;
+}
+
+function getCocktailByName(){
+    $curl = curl_init();
+
+    $id = htmlentities($_POST['cocktailName']);
+
+
+    curl_setopt_array($curl, array(
+    CURLOPT_URL => 'www.thecocktaildb.com/api/json/v1/1/lookup.php?i=' . $id . '',
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => '',
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 0,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => 'GET',
+    ));
+
+    $response = curl_exec($curl);
+
+    curl_close($curl);
+    $APIResponse = json_decode($response, true);
+
+    return $APIResponse;
 }
 
