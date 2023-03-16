@@ -55,9 +55,9 @@
                     <button type="submit" class="btn btn-primary mb-3">Search</button>
                 </div>
             </form>
-            <form class="row g-3" method="POST" id="" name="randomCocktail">
+            <form class="row g-3" method="POST" id="randomCocktail" name="randomCocktail">
                 <div class="col-auto">
-                    <button type="submit" class="btn btn-primary mb-3">Search</button>
+                    <button type="submit" class="btn btn-primary mb-3" name="randomCocktail">Random Cocktail</button>
                 </div>
             </form>
 
@@ -65,6 +65,17 @@
             <?php
                 if(isset($_POST['randomCocktail'])){
                     $randomCocktail = getRandomCocktail();
+
+                    $id = $randomCocktail["drinks"][0]["idDrink"];
+                    $name = $randomCocktail["drinks"][0]["strDrink"];
+                    $alcohol = $randomCocktail["drinks"][0]["strAlcoholic"];
+                    $glass = $randomCocktail["drinks"][0]["strGlass"];
+
+
+                    echo($id);
+                    echo($name);
+                    echo($alcohol);
+                    echo($glass);
                 }
             ?>
         </main>
